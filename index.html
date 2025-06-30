@@ -9,11 +9,23 @@
 <body>
   <div class="quiz-container">
     <h1>Simple Quiz</h1>
-    <div id="question">Question will go here</div>
-    <div id="answers"></div>
-    <button id="next">Next</button>
+    <div id="start-screen">
+      <button id="start">Start Quiz</button>
+    </div>
+    <div id="quiz-screen" style="display:none;">
+      <div id="question"></div>
+      <div id="answers"></div>
+      <button id="next" style="display:none;">Next</button>
+    </div>
+    <div id="end-screen" style="display:none;">
+      <h2>Quiz finished!</h2>
+      <p id="score"></p>
+      <button id="restart">Restart</button>
+    </div>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
+
+
+

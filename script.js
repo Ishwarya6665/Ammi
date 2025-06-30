@@ -11,12 +11,18 @@ const questions = [
   },
   {
     question: "What does CSS stand for?",
-    answers: ["Cascading Style Sheets", "Computer Style Sheet", "Creative Style System", "Colorful Style Sheets"],
+    answers: [
+      "Cascading Style Sheets",
+      "Computer Style Sheet",
+      "Creative Style System",
+      "Colorful Style Sheets"
+    ],
     correct: 0
   }
 ];
 
 let currentQuestion = 0;
+let score = 0;
 
 function showQuestion() {
   const q = questions[currentQuestion];
@@ -28,18 +34,29 @@ function showQuestion() {
   q.answers.forEach((answer, index) => {
     const button = document.createElement("button");
     button.textContent = answer;
-    button.onclick = () => checkAnswer(index);
+    button.addEventListener("click", () => checkAnswer(index, button));
     answersDiv.appendChild(button);
   });
+
+  document.getElementById("next").style.display = "none";
 }
 
-function checkAnswer(selected) {
+function checkAnswer(selectedIndex, button) {
   const q = questions[currentQuestion];
-  if (selected === q.correct) {
-    alert("Correct!");
+  const answerButtons = document.querySelectorAll("#answers button");
+
+  if (selectedIndex === q.correct) {
+    button.classList.add("correct");
+    score++;
   } else {
-    alert("Wrong!");
+    button.classList.add("wrong");
+    answerButtons[q.correct].classList.add("correct");
   }
+
+  // disable all buttons
+  answerButtons.forEach(btn => btn.disabled = true);
+
+  document.getElementById("next").style.display = "inline-block";
 }
 
 document.getElementById("next").addEventListener("click", () => {
@@ -47,10 +64,25 @@ document.getElementById("next").addEventListener("click", () => {
   if (currentQuestion < questions.length) {
     showQuestion();
   } else {
-    alert("Quiz finished!");
-    currentQuestion = 0;
-    showQuestion();
+    endQuiz();
   }
 });
 
-showQuestion();
+document.getElementById("start").addEventListener("click", () => {
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "block";
+  currentQuestion = 0;
+  score = 0;
+  showQuestion();
+});
+
+document.getElementById("restart").addEventListener("click", () => {
+  document.getElementById("end-screen").style.display = "none";
+  document.getElementById("start-screen").style.display = "block";
+});
+
+function endQuiz() {
+  document.getElementById("quiz-screen").style.display = "none";
+  document.getElementById("end-screen").style.display = "block";
+  document.getElementById("score").textContent = `You got ${score} out of ${questions.length} correct!`;
+}
